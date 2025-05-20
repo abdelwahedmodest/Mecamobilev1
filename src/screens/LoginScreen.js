@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 import colors from '../constants/colors';
+import { useAuth } from '../context/AuthContext';
 import authService from '../services/authService';
 
 const LoginScreen = ({ navigation }) => {
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -23,7 +25,7 @@ const LoginScreen = ({ navigation }) => {
     try {
       const user = await authService.login(email, password);
       console.log('Connexion réussie:', user);
-      navigation.replace('Main');
+      login(); // Use the login function from context
     } catch (error) {
       setError(error.message);
     } finally {

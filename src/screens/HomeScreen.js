@@ -5,7 +5,7 @@ import colors from '../constants/colors';
 
 // Exemple de données utilisateur - À remplacer par des données réelles plus tard
 const USER_DATA = {
-  name: 'Jean Apprenant',
+  name: 'abdelwahed samil',
   coursesEnrolled: [
     { id: '1', title: 'Introduction à la Mécanique Moteur', progress: 0.75 },
     { id: '2', title: 'Systèmes de Freinage : Théorie et Pratique', progress: 0.40 },
@@ -44,7 +44,7 @@ const HomeScreen = ({ navigation }) => {
         ))
       ) : (
         <Text style={styles.noCourses}>
-          Vous n'êtes inscrit à aucun cours pour le moment
+          Vous êtes pas  encore inscrit à aucun cours pour le moment
         </Text>
       )}
       

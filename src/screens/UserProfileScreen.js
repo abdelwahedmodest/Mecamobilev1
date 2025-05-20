@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useAuth } from '../context/AuthContext';
 
 // Sample User Data - replace with actual data later
 const USER_DATA = {
   name: 'Abdelwahed Jean',
   email: 'abdelwahed.jean@gmail.com',
-  avatarUrl: 'https://via.placeholder.com/150/007bff/ffffff?Text=JA',
+  avatarUrl: './src/assets/logo.png',
   coursesEnrolled: [
     { id: '1', title: 'Introduction à la Mécanique Moteur', progress: 95 },
     { id: '2', title: 'Systèmes de Freinage : Théorie et Pratique', progress: 25 },
@@ -16,7 +17,26 @@ const USER_DATA = {
   ],
 };
 
-const UserProfileScreen = ({ navigation }) => {
+const UserProfileScreen = ({ route, navigation }) => {
+  const { logout } = useAuth();
+
+  // Add effect to handle updated data
+  React.useEffect(() => {
+    if (route.params?.refresh && route.params?.updatedUserData) {
+      // Update the UI with new data
+      const updatedData = route.params.updatedUserData;
+      // Update your UI state here
+    }
+  }, [route.params]);
+
+  const handleLogout = () => {
+    logout(); // Clear authentication state
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Login' }], // Navigate to Login screen and clear navigation stack
+    });
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -52,13 +72,26 @@ const UserProfileScreen = ({ navigation }) => {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={() => alert('Fonctionnalité de modification du profil à venir !')}>
+      <TouchableOpacity 
+        style={styles.button} 
+        onPress={() => navigation.navigate('ProfileScreen', { 
+          userData: {
+            name: USER_DATA.name,
+            email: USER_DATA.email,
+            phone: USER_DATA.phone || '',
+            speciality: USER_DATA.speciality || '',
+          }
+        })}
+      >
         <Text style={styles.buttonText}>Modifier le Profil</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={[styles.button, styles.logoutButton]} onPress={() => alert('Déconnexion...')}>
+      
+      <TouchableOpacity 
+        style={[styles.button, styles.logoutButton]} 
+        onPress={handleLogout}
+      >
         <Text style={styles.buttonText}>Se Déconnecter</Text>
       </TouchableOpacity>
-
     </ScrollView>
   );
 };

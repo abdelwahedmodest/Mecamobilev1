@@ -1,17 +1,21 @@
-import React from 'react';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons';
-import HomeScreen from '../screens/HomeScreen';
-import CourseListScreen from '../screens/CourseListScreen';
-import UserProfileScreen from '../screens/UserProfileScreen';
+import React from 'react';
+import { TouchableOpacity } from 'react-native';
 import colors from '../constants/colors';
+import { useAuth } from '../context/AuthContext';
+import CourseListScreen from '../screens/CourseListScreen';
+import HomeScreen from '../screens/HomeScreen';
+import UserProfileScreen from '../screens/UserProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
+  const { logout } = useAuth();
+
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
+      screenOptions={({ route, navigation }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
@@ -27,6 +31,18 @@ const TabNavigator = () => {
         },
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: 'gray',
+        headerRight: () => (
+          <TouchableOpacity 
+            onPress={() => logout(navigation)}
+            style={{ marginRight: 16 }}
+          >
+            <MaterialCommunityIcons 
+              name="logout" 
+              size={24} 
+              color={colors.primary} 
+            />
+          </TouchableOpacity>
+        ),
       })}
     >
       <Tab.Screen 
